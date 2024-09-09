@@ -73,6 +73,8 @@ std::vector<const char*> getRequiredExtensions()
 
     // MacOS extension
     extensions.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+    extensions.emplace_back("VK_KHR_get_physical_device_properties2");
+    // extensions.emplace_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES2);
 
     return extensions;
 }
@@ -146,6 +148,61 @@ private:
     {
         createInstance();
         setupDebugMessenger();
+        pickPhysicalDevice();
+        createLogicalDevice();
+    }
+
+    void createLogicalDevice()
+    {
+        QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+        VkDeviceQueueCreateInfo queueCreateInfo{};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+        queueCreateInfo.queueCount = 1;
+
+        float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        VkPhysicalDeviceFeatures deviceFeatures{};
+
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.pQueueCreateInfos = &queueCreateInfo;
+        createInfo.queueCreateInfoCount = 1.0;
+
+        createInfo.pEnabledFeatures = &deviceFeatures;
+
+        createInfo.enabledExtensionCount = 0;
+
+        if (enableValidationLayers)
+        {
+            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            createInfo.ppEnabledLayerNames = validationLayers.data();
+        }
+        else
+        {
+            createInfo.enabledLayerCount = 0;
+        }
+
+        // auto extensions = getRequiredExtensions();
+        
+        // for (const auto& extension: extensions)
+        // {
+        //     std::cout << '\t' << extension << '\n';
+        // }
+
+        // createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+        const char* deviceExtension = "VK_KHR_portability_subset";
+        createInfo.enabledExtensionCount = 1;
+        createInfo.ppEnabledExtensionNames = &deviceExtension;
+        
+        if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create logical device!");
+        }
+
+        vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
     }
 
     struct QueueFamilyIndices {
@@ -200,7 +257,7 @@ private:
 
     void pickPhysicalDevice()
     {
-        VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+        physicalDevice = VK_NULL_HANDLE;
         uint32_t deviceCount = 0;
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
         
@@ -322,6 +379,7 @@ private:
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
         }
 
+        vkDestroyDevice(device, nullptr);
         vkDestroyInstance(instance, nullptr);
 
         glfwDestroyWindow(window);
@@ -331,6 +389,9 @@ private:
     GLFWwindow* window;
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    VkDevice device;
+    VkQueue graphicsQueue;
+    VkPhysicalDevice physicalDevice;
 };
 
 int main() {

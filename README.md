@@ -11,6 +11,7 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
 1. Setup instance: connetion between your application and Vulkan library
 2. Enable/disable validation layers: components in Vulkan library to debug your application
 3. Select physical device: select a graphics card that supports that features needed i.e. graphics APIs, dedicated graphics cards that support geometry shaders
+4. Create logical device and queue: logical device is interface to queue; command buffers are submitted to queue
 
 ### TODO Vulkan
 
