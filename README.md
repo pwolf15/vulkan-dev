@@ -15,6 +15,19 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
 5. Add window surface and presentation queue: note presentation queue distinct from graphics queue
 6. Create swap chain: contains queue of images that will be presented to the screen; sync presentation of images with refresh rate of screen
 7. Create image views into images in swap chain
+8. Setup the graphics pipeline
+    * vertices/meshes => pixels in render targets
+    * what is each step and what is responsibility?
+    * input assembler
+    * vertex shader
+    * tessellation shaders
+    * geometry shader
+    * rasterization
+    * fragment shader
+    * color blending
+    * fixed-function vs. programmable
+    * what are clip coordinates?
+    * what are normalized device coordinates?
 
 ### TODO Vulkan
 
