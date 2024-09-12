@@ -31,7 +31,8 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
     * what does each shader do and what are there inputs/outputs?
     * what is spir-v?
     * why can I cast vector (char*) to uint32_t*
-
+    * what does it mean for Vulkan pipeline to be immutable?
+    
 ### TODO Vulkan
 
 - [ ] Vulkan Tutorial
