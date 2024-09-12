@@ -11,6 +11,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <fstream>
 #include <optional>
 #include <set>
 #include <cstdint>
@@ -19,6 +20,26 @@
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
+
+static std::vector<char> readFile(const std::string& filename)
+{
+    std::ifstream file(filename, std::ios::ate | std::ios::binary);
+
+    if (!file.is_open())
+    {
+        throw std::runtime_error("failed to open file!");
+    }
+
+    size_t fileSize = (size_t) file.tellg();
+    std::vector<char> buffer(fileSize);
+
+    file.seekg(0);
+    file.read(buffer.data(), fileSize);
+
+    file.close();
+    
+    return buffer;
+}
 
 const std::vector<const char*> validationLayers = 
 {
@@ -166,7 +187,11 @@ private:
 
     void createGraphicsPipeline()
     {
-        
+        auto vertShaderCode = readFile("../shaders/vert.spv");
+        auto fragShaderCode = readFile("../shaders/frag.spv");
+
+        std::cout << "vert shader size: " << vertShaderCode.size() << "\n";
+        std::cout << "frag shader size: " << fragShaderCode.size() << "\n";
     }
 
     void createImageViews()
@@ -179,7 +204,7 @@ private:
             createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             createInfo.image = swapChainImages[i];
             createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-            createInfo.format = swapChainImageFormat;
+            createInfo.format = (VkFormat)swapChainImageFormat;
             createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
             createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
             createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -258,7 +283,7 @@ private:
         swapChainImages.resize(imageCount);
         vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
 
-        swapChainImageFormat = surfaceFormat;
+        swapChainImageFormat = surfaceFormat.format;
         swapChainExtent = extent;
     }
 
@@ -652,7 +677,7 @@ private:
     VkSurfaceKHR surface;
     VkSwapchainKHR swapChain;
     std::vector<VkImage> swapChainImages;
-    VkSurfaceFormatKHR swapChainImageFormat;
+    VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
 };

@@ -28,6 +28,8 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
     * fixed-function vs. programmable
     * what are clip coordinates?
     * what are normalized device coordinates?
+    * what does each shader do and what are there inputs/outputs?
+    * what is spir-v?
 
 ### TODO Vulkan
 
