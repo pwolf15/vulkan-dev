@@ -32,7 +32,12 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
     * what is spir-v?
     * why can I cast vector (char*) to uint32_t*
     * what does it mean for Vulkan pipeline to be immutable?
-    
+    * what is a render pass?
+        * an object which describes which framebuffer attachments to use while rendering
+        * https://www.youtube.com/watch?v=x2SGVjlVGhE
+    * what is a color attachment?
+        * http://disq.us/p/2xr2ue4
+
 ### TODO Vulkan
 
 - [ ] Vulkan Tutorial
