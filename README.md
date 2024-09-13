@@ -40,6 +40,7 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
     * what is the difference between a pipeline layout and render pass?
     * what is the difference between fixed-function stage and shader stage?
     * what are dynamic states?
+    * what is a framebuffer?
 
 ### TODO Vulkan
 
