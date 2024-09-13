@@ -41,7 +41,12 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
     * what is the difference between fixed-function stage and shader stage?
     * what are dynamic states?
     * what is a framebuffer?
-    * what is a command buffer? command?
+    * what is a command buffer? command? pool?
+    * what are the general steps for drawing a frame?
+    * why is synchronization explicit in Vulkan?
+    * what kinds of semaphore are available?
+    * what is a fence? semaphore?
+    * what is a subpass dependency?
 
 ### TODO Vulkan
 
