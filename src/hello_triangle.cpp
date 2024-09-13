@@ -273,6 +273,8 @@ private:
     void drawFrame()
     {
         vkWaitForFences(device, 1, &inFlightFence, VK_TRUE, UINT64_MAX);
+        vkResetFences(device, 1, &inFlightFence);
+
         uint32_t imageIndex;
         vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphore,
             VK_NULL_HANDLE, &imageIndex);
@@ -311,8 +313,6 @@ private:
         presentInfo.pResults = nullptr;
 
         vkQueuePresentKHR(presentQueue, &presentInfo);
-
-        vkResetFences(device, 1, &inFlightFence);
     }
 
     void createCommandPool()
@@ -1024,6 +1024,8 @@ private:
             glfwPollEvents();
             drawFrame();
         }
+
+        vkDeviceWaitIdle(device);
     }
 
     void cleanup()
