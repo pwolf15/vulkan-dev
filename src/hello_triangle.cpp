@@ -228,8 +228,8 @@ private:
         std::cout << "vert shader size: " << vertShaderCode.size() << "\n";
         std::cout << "frag shader size: " << fragShaderCode.size() << "\n";
 
-        vertShaderModule = createShaderModule(vertShaderCode);
-        fragShaderModule = createShaderModule(fragShaderCode);
+        VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
+        VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
 
         VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
         vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -348,6 +348,9 @@ private:
         {
             throw std::runtime_error("failed to create pipeline layout!");
         }
+
+        vkDestroyShaderModule(device, fragShaderModule, nullptr);
+        vkDestroyShaderModule(device, vertShaderModule, nullptr);
     }
 
     VkShaderModule createShaderModule(const std::vector<char>& code)
@@ -828,8 +831,6 @@ private:
 
         vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
         vkDestroyRenderPass(device, renderPass, nullptr);
-        vkDestroyShaderModule(device, fragShaderModule, nullptr);
-        vkDestroyShaderModule(device, vertShaderModule, nullptr);
 
         for (auto imageView: swapChainImageViews)
         {
@@ -858,8 +859,6 @@ private:
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
-    VkShaderModule vertShaderModule;
-    VkShaderModule fragShaderModule;
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
 };
