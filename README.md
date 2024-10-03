@@ -8,7 +8,31 @@ source ~/VulkanSDK/1.3.290.0/setup-env.sh
 
 ### Vulkan Tutorial Notes
 
-1. Setup instance: connetion between your application and Vulkan library
+#### General Ideas
+
+* Every Vulkan resource must be explicitly managed (create -> destroy)
+* Vulkan does NOT provide window management. Use a library like GLFW to allocate a window.
+* Why is there an `sType` field on each Vulkan struct?
+    * see answer here: https://docs.vulkan.org/guide/latest/pnext_and_stype.html
+    * `pNext`: enables expansion of Vulkan standard via Linked List (how?)
+    * `sType`: used by loader, layers, and implementations to know type of `pNext`
+* The Vulkan API is designed around minimal driver overhead.
+* Validation layers provide a means for debugging your Vulkan application. They hook into Vulkan function calls and apply some checks.
+    * Best practice: enable for debug, disable for release
+* physical device: GPU that supports your application needs
+* every operation requires commands to be submmiteed to queue
+* different queues belong to different queue families
+* certain devices support certain queues
+* logical device: interface to physical device (which features to use, queues to create)
+* Vulkan is platform agnostic => can't interface with window system on its own
+* Window system integration extension allows presentation of Vulkan results to screen
+* to allow presentation of images, need to check with device
+* Vulkan has no concept of "default framebuffer"
+* swap chain: queue of images waiting to be presented to screen
+
+#### Drawing a Triangle
+
+1. Setup instance: connection between your application and the Vulkan library
 2. Enable/disable validation layers: components in Vulkan library to debug your application
 3. Select physical device: select a graphics card that supports that features needed i.e. graphics APIs, dedicated graphics cards that support geometry shaders
 4. Create logical device and queue: logical device is interface to queue; command buffers are submitted to queue
